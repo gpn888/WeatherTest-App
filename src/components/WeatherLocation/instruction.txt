@@ -1,0 +1,283 @@
+DEL INDEX.JS - WEATHERLOCATION
+
+Al llamar a otras carpetas no es necesario agregar extensiones de archivo
+Solo se llama al que se busca
+Al mismo nivel es con ./ y se finaliza con / si es que es carpeta con index
+A un nivel anterior ./../ (y tantos ../ como niveles haya) 
+funtional component 
+const XXX = () => {}
+
+CLASS COMPONENT
+Maneja el ciclo de vida del React, los estados
+1) Llamamos al {Component} al mismo nivel de importancion del React
+2) Convertimos el functional
+class XXX extends Component {
+    render () => (
+
+    )};
+
+==============
+
+1) LLAMADO onClick={this.funcion}
+2) funcion = () => {
+    ACCION CUALQUIERA
+}
+3) 
+Realizamos un constructor super
+constructor(){
+    super();
+    this.state = {
+        valorA: valor1,
+        valorB: valor2
+    }
+4) 
+Modificamos la variable dentro del tag para que se alimente desde el constructor
+Usando this.state.valor
+Este estado solo se setea incialmente desde el constructor, no de la funcion onClick
+5)
+Despues para que el onClick funcione
+Recien hago el cambio del state bajo setState
+this.setState({
+    valorA: valor2,
+})
+6) Puedo mejorar la lectura del render
+-cambiandole los parentesis a corchetes
+-llamando una destructuracion de los valores iniciales
+    const {valorA, valorB} = this.state // 
+-agrego el return que piden las funciones de mas de 1 linea
+}
+
+RESUMEN: 
+Primero se da un valor inicial en el constructor dandole mediante objetos un valor
+inicial, este se renderiza, al actualizar se ejecuta la funcion handle
+que actualiza a traves del setState y alli el state se renderiza con los nuevos valores
+No es necesario darle los valores completos si es que no se modifican al update
+
+================================
+================================
+
+DEL LOCATION - INDEX.JS
+/* DESTRUCTURACION DE UN OBJETO
+    1)
+    const XXX = (props) => {
+        const city = props.city;
+        return (
+            {city}
+        );
+    }
+    2)
+    const XXX = (props) => {
+        const {city} = props;
+        return (
+            {city}
+        );
+    }
+    3)
+    const XXX = ({city}) => (
+        {city}
+    )
+
+DEL WEATHERDATA - INDEX.JS
+===========================
+
+DESTRUCTURAMOS LAS VARIABLES PARA DARLE MULTIPLES VALORES DESDE LA BASE
+DEL MODULO - SUBIR EL NIVEL / ALIMENTAR DE UNA API EXTERNA
+1) DESTRUCTURAMOS EN UN SOLO VARIABLE = data
+2) INDICAMOS QUE ELEMENTOS TENDRA DATA con otro DESTRUCTURADO
+3) LLEVAMOS LA IMPORTACION DE DATOS DEL "CONSTANTS" AL NIVEL PRINCIPAL
+Y LO BORRAMOS DE AQUI
+4) EN EL NIVEL SUPERIOR LLAMAMOS LA VARIABLE DENTRO DEL TAG
+data = {data1}
+5) A su vez damos los nuevos valores como constante data
+const data = {
+    variable: valor,
+}
+
+============== 
+
+VALIDAMOS COMO FORMA - usamos (ptsh) 
+Dentro de ella colocamos las variables para validar una por una.
+
+
+------ DEL EXTRAINFO
+
+
+TEMPLATE
+{`${VARIABLE} mas texto opcional`}
+
+====================
+
+
+FUNCION
+const XXXprop = (prop) => {
+const XXXprop = prop => { al ser un solo valor no necesita de parentesis
+    switch (prop) {
+        case ...
+            return (<TAG />)
+    }
+}
+Lo usas para imprimir {XXX(prop)}
+
+===========
+
+PARA EVITAR CAMBIAR FUNCIONALIDADES CADA VEZ QUE SE CAMBIEN ELEMENTOS,
+SIMPLIFICANDO EL CODIGO
+
+const XXX-funcionalidad = prop => {
+    switch (prop) {
+        case :
+            return VALOR; 
+    }
+}
+
+const getWeatherIcon = WeatherState => { puedes cambiar el tag y no estar cambiando todos los valores
+    return (<TAG name={XXX-funcionalidad(prop)} />);
+}
+
+=================
+
+ usando CONSTANTES para asegurar nombres entendibles y no usar cadenas
+
+1) Creo un archivo donde almacene las cadenas:
+export const CONSTANTE  = 'cadena';
+2) Llamo a las constantes
+import { CONSTANTE } from 'ruta';
+3) Cambio las cadenas por las constantes
+case CONSTANTE:
+    return VALOR;
+4) En el archivo donde usare las constantes; llamo a estas como en este archivo 
+(ver paso 2) y las uso en las propiedades como si fueran cadenas
+
+==========
+
+VALIDAR VALORES
+Se instala PropTypes
+Se llama a los PropTypes
+Se valida debajo de la variable y encima de la exportacion
+Se puede usar comodin: variable : ptn = PropTypes.number,
+Ex: VARIABLE.propTypes = {
+    valor : ptn
+}
+Puedo validar: 
+array, funciones, objetos, strings, symbol, elementos, 
+instancias, shapes, ... (revisar pagina de proptypes)
+
+NIVEL II 
+=================
+=================
+
+del transformweather
+
+Las funciones para convertir datos de un api y consumirlo son una capa de servicios
+
+1) De WData importo las constantes
+2) Tambien importo las funciones de conversion y las convierto en constantes
+3) La principal que convierte los datos del api se convierte en el transformWeather
+4) La antigua getData del WD dentro del handleUpdate toma el nuevo nombre de funcion "transformWeather"
+5) En este archivo ya no necesitamos el this para llamar funcion puesto que los variables no estan en este ("this")
+
+----
+
+FETCH: Busca datos del servidor
+PROMISE: Ejecuta un valor a futuro, asincronicamente - estado pendiente
+Cuando el valor es positivo este usa la sentencia .then para ejecutar una funcion
+Y cuando es negativo ejecuta la sentencia .catch para usar la funcion sustitutoria
+PROMISE.then(VARIABLE=>{}).catch(VARIABLE=>{})
+Cuando lanzamos el fetch estamos empezando a consumir asincronicamente el api (primer then)
+despues este nos devuelve los datos necesitados y para transformarlos (segundo then)
+1) 1°then - data : console (api_weather) -> me da la url consumida
+2) 1°then - data : console (data) -> me da los datos de la api
+3) 1°then return data.json()
+4) 2°then - w_data  : console (weather_data - o cualquier nombre) me dara los datos para transformar como objetos
+5) 2°then - w_data : vamos a convertir los datos del w_data para el data(puede ser cualquier nombre) [const data = this.getData(w_data)]
+6) Llamo al convertidor onClick del handleUpdateClick "this.setState" ahora convirtiendo los valor del data original en el nuevo data
+7) Convertimos el data usando funciones encima del hundleUpdate con la funcion que colgamos antes "getData(weather_data)"
+8) En funcion getData = weather_data => {} convertimos los valores pedidos con los valores que nos da la api y alimentamos con return
+9) Se pueden hacer mas funciones como getWeatherState si es que llegar a estos valores son mas complejos, en este caso se hardcodeo.
+ 
+ -------
+
+CICLO DE VIDA 
+class component tiene acceso al ciclo de vida del React
+como el constructor (ejecutado 1 vez al inicio) y el render (ejecutado al inicio y al haber un evento o accion con el setState)
+-pero en medio de estas puede haber otra componentWillMount - SNIPPET (cwm)
+    este cwm se ejecuta una sola vez al inicio
+-cdm componentDidMount
+    se ejecuta despues de rendirizar al iniciar
+-cwup componentWillUpdate / cdup componentDidUpdate
+    se ejecuta despues de darle update o al haber el evento de actualizacion, antes del render,
+    el otro despues del render
+constructor
+componentWillMount
+componentDidMount
+render
+componentWillUpdate
+render
+componentDidUpdate
+**** para que se alimente inmediatamente de cargar la pagina los datos, usare el this.handleUpdate() en el 'cwm'
+
+-------------
+
+1) Para no estar usando datos falsos, obviamos el data1 
+
+const data1 = {
+    temperature: 20,
+    weatherState: SUNNY,
+    humidity: 30,
+    wind: 40,
+}  
+
+2) Cargamos un valor de null al data
+3) Hacemos un if / else en la parte de estructura donde se necesite
+{data ? "if" : "else"}
+4) El Update ya no necesita del button
+<button onClick={this.handleUpdateClick} >Actualizar</button>
+
+-----------
+
+activamos eslint
+npm install eslint-plugin-react
+.eslintrc
+
+===============================
+
+NIVEL III 
+---------
+
+no hay necesidad del handleUpdate, en esta funcionalidad puede ir al componentWillMount
+Necesitamos tener multiples "city" desde la plantilla
+La constante city para el api no es necesario volverlo general
+1) City es ahora una propiedad para el constructor
+2) La api baja al fetch desde el CWMount
+3) El city con destructuring es igual a this.state.city
+
+Al mismo nivel de WeatherLocation, creo LocationList
+LocationList tendra multiples WeatherLocation y estos en el tag tendran la city
+
+------
+
+ICONOS
+A todos los js donde las variables de iconos debes de usar
+el weather state ahora consume desde el id del weather_data[0]
+Añades la variable donde corresponda y en la funcion que convierte los estados hago la comparacion desde sus id's
+
+--------
+
+CONVERTIR ESTA LISTA EN DINAMICA ACEPTANDO UNA LISTA DE CIUDADES
+
+- MAP: Convierte un array de un tipo a otro tipo
+
+1) En la app.js se invoca un array desde el tag cities={cities}
+a su vez se cuelga la lista de arry deseada
+2)Creamos una arrow funcion que convertira el array de un tipo a otro
+O sea de sus valores a multiples tags con .map (citites -> city)
+3) El LocationList tendra una propiedad para el grupo de cities
+y llamaremos a la arrow funcion que se creo antes
+
+--- map.key
+
+en map se necesita mayor eficiencia y cada componenete necesita ser individual
+para eso se usa un key
+1) cities.map( (city, index) => (<WeatherLocation key={index} city={city} />))
+2) el problema es que el index puede variar la posicion, la city siempre sera unica
+Toda key debe ser una propiedad unica

@@ -1,0 +1,13 @@
+.wl--header {
+    border-bottom: 5px solid var(--color-negro);
+    grid-area: location;
+    padding: 2rem;
+}
+
+.wl--header h3 {
+    font-size: 2em;
+    letter-spacing: .5rem;
+    line-height: 1;
+    margin: 0;
+    text-transform: uppercase;
+}

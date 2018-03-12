@@ -1,0 +1,33 @@
+.wl--data {
+    display: grid;
+    grid-area: data;
+    grid-template-areas: 
+        "temp info info";
+}
+.wl--data > * {
+    padding: 2rem;
+}
+.wl--data-temp {
+    grid-area: temp; 
+}
+.wl--data-info {
+    grid-area: info;
+    border-left: 5px solid black;
+}
+.wl--data-item > * {
+    display: inline-block;
+    margin: 0;
+}
+.wl--data-temp i {
+    font-size: 4em;
+    display: block;
+    float: left;
+}
+.wl--data-temp span {
+    line-height: 4em;
+    float: right;
+}
+.wl--data-info > * {
+    display: block;
+    padding: .5rem 0;
+}
